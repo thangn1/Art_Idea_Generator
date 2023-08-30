@@ -133,21 +133,56 @@ function removeElement(array, item) {
 }
 
 
+/* Generate Prompt and OpenAI code */
 
-/* Open AI ChatGPT setup */
-// did not work because node.js is extremely confusing and convoluted.
-// Taken from https://runjs.app/blog/chatgpt-javascript-api
-// initial load of openai npm package // downloaded by typing 'npm i openai' into the terminal
-// const { Configuration, OpenAIApi } = require("openai");
-// import { Configuration, OpenAIApi } from "openai";
-// setup openai api key
-/* OpenAI API key: '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' */
-// const configuration = new Configuration({
-//     apiKey: ''
-// });
-// Configure openai api access
-// const openai = new OpenAIApi(configuration);
+let query_string = '';
+/* Using the selected_categories array, which contain all the categories that the user has selected (either entered through input or clicked on button), query chatgpt for responses on 'ideas for what to draw about ...' or just 'ideas about ...'*/
+const generate_prompt_btn = document.getElementById('random-prompt-btn');
 
+const loading_progress = document.getElementById('loading-progress');
+const loading_bar = document.getElementById("loading-bar");  
+
+generate_prompt_btn.addEventListener('click', function() {
+    // console.log(selected_categories);
+
+    // create a query string to enter into chaptgpt
+    query_string = `Suggest a idea for artwork about `;
+    for (let category of selected_categories) {
+        query_string += `${category}, `;
+    }
+    query_string += '. You must not give a response longer than 200 words.';
+    // console.log(query_string);
+    
+    loading_progress.classList.remove('hidden'); // add hidden class back in generatePrompt() once prompt has generated
+    // update progress bar from 1% to 100% to give a sense that the program is taking time to load
+    updateProgressBar();
+    // call the chaptgpt api to generate a text response from ai about the query string.
+    generatePrompt();
+});
+
+function updateProgressBar() {
+     
+    loading_bar.style.width = '1%';
+    let width = 1;
+    let identity = setInterval(scene, 10);
+    function scene() {
+      if (width >= 100) {
+        clearInterval(identity);
+      } else {
+        width+=0.18; 
+        loading_bar.style.width = width + '%'; 
+      }
+    }
+  }
+
+// https://www.builder.io/blog/stream-ai-javascript
+const API_URL = "https://api.openai.com/v1/chat/completions";
+const API_KEY = ""; // to be set somehow in environmental variables, possibly in netlify
+
+const prompt_output = document.getElementById('prompt-output');
+
+/* OpenAI Api requires payment. https://platform.openai.com/account/usage
+Approximately $0.001 (0.1cents) per request. Loaded with $10 on 8/30/2023 that lasts until 9/1/2024 */
 // Next, take the user input and write the main function to get a response.
 /*
 createChatCompletion parameters
@@ -156,59 +191,79 @@ max_tokens is the number of tokens able to be received back. 1 english word = 1.
 Temperature is a hyperparameter used in some natural language processing models, including ChatGPT, to control the level of randomness or "creativity" in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. 
 top_p can also be used to control randomness, but documentation recommended either changing temperature or top_p, not both.
 */
-// const getResponse = async () => {
-//     const response = await openai.createChatCompletion({
-//         model: 'gpt-3.5-turbo',
-//         messages: [
-//             {
-//                 role: 'user',
-//                 content: query_string
-//             },
-//         ],
-//         temperature: 0,
-//         max_tokens: 2048,
-//         temperature: 1.5, 
-//         top_p: 1.0,
-//         frequency_penalty: 0.0,
-//         presence_penalty: 0.0
-//     });
+const generatePrompt = async () => {
+
+
+    try {
+        // Fetch the response from the OpenAI API with the signal from AbortController
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${API_KEY}`,
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: 'user', content: query_string }],
+                temperature: 1,
+                max_tokens: 256,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0
+            })
+
+        })
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data);
+            prompt_output.innerText = data.choices[0].message.content;
+            loading_progress.classList.add('hidden');
+        })
     
-//     console.log(response.data.choices[0].message);
-// }
-
-
-// https://www.builder.io/blog/stream-ai-javascript
-
-let query_string = '';
-/* Using the selected_categories array, which contain all the categories that the user has selected (either entered through input or clicked on button), query chatgpt for responses on 'ideas for what to draw about ...' or just 'ideas about ...'*/
-const generate_prompt_btn = document.getElementById('random-prompt-btn');
-
-generate_prompt_btn.addEventListener('click', function() {
-    console.log(selected_categories);
-
-    // create a query string to enter into chaptgpt
-    query_string = `Suggest an idea for artwork about `;
-    for (let category of selected_categories) {
-        query_string += `${category}, `;
+    } catch (error) {
+        console.error("Error:", error);
+        prompt_output.innerText = "Error occurred while generating.";
     }
-    // console.log(query_string);
-    // call the chaptgpt api to generate a text response from ai about the query string.
-    // getResponse();
-});
-
-const API_URL = "<https://api.openai.com/v1/chat/completions>";
-const API_KEY = "YOUR_API_KEY";
-
+};
 
 
 
 
 
 /* Handle Color generation */
-
+/* get color-related DOM elements */
+const color_scheme_buttons = [
+    document.getElementById('monochromatic-btn'),
+    document.getElementById('analogous-btn'),
+    document.getElementById('complementary-btn'),
+    document.getElementById('split-complementary-btn'),
+    document.getElementById('triadic-btn')
+];
+const color_scheme_names = [
+    'monochrome',
+    'analogic',
+    'complement',
+    'analogic-complement',
+    'triad'
+];
+const color_blocks = [
+    document.getElementById('color1'),
+    document.getElementById('color2'),
+    document.getElementById('color3'),
+    document.getElementById('color4'),
+    document.getElementById('color5')     
+];
+const hex_blocks = [
+    document.getElementById('hex1'),
+    document.getElementById('hex2'),
+    document.getElementById('hex3'),
+    document.getElementById('hex4'),
+    document.getElementById('hex5') 
+]
 /* generate random color on page load*/
-let main_color = generateRandomColor();
+let main_color = generateRandomColor(); // generates main-color
 let main_color_data = {};
+let hex_codes = [];
 /* Change color of main-color variable */
 // Get the root element
 const root_DOM = document.querySelector(':root');
@@ -255,33 +310,20 @@ function generateRandomColor() {
     .then(color_data => {
         // console.log('fetch main color',color_data);
         main_color_data = color_data;
+        
+        hex_codes[0] = color_data.hex.value;
+        // console.log('src', hex_codes[0]);
+        // set the hex_code displayed overtop the main color to be the hex_value from GET id?color
+        hex_blocks[0].innerText = hex_codes[0];
+        
+        
     });
     return {r: r_val, g: g_val, b: b_val};
     // return an object with (r,g,b)
 }
 
-const color_scheme_buttons = [
-    document.getElementById('monochromatic-btn'),
-    document.getElementById('analogous-btn'),
-    document.getElementById('complementary-btn'),
-    document.getElementById('split-complementary-btn'),
-    document.getElementById('triadic-btn')
-];
-const color_scheme_names = [
-    'monochrome',
-    'analogic',
-    'complement',
-    'analogic-complement',
-    'triad'
-];
-const color_blocks = [
-    document.getElementById('color1'),
-    document.getElementById('color2'),
-    document.getElementById('color3'),
-    document.getElementById('color4'),
-    document.getElementById('color5')     
-];
-let color_scheme_index = 0;
+
+let color_scheme_index = 0; // used to index color_scheme_names and color_scheme_buttons
 getColorScheme(color_scheme_index);
 
 document.addEventListener('click', function(e) {
@@ -315,6 +357,8 @@ document.addEventListener('click', function(e) {
     
 });
 
+
+
 /* Based on which color scheme was selected, GET a list of colors from thecolorapi using the corresponding color_scheme */
 function getColorScheme(index) {
     // GET color scheme from thecolorapi
@@ -326,6 +370,8 @@ function getColorScheme(index) {
         if (color_scheme_names[index] === 'complement') {
             let complement_color = data.colors[0].rgb;
             color_blocks[1].style.backgroundColor = complement_color.value;
+            hex_codes[1] = data.colors[0].hex.value;
+            hex_blocks[1].innerText = hex_codes[1];
             // get the monochrome scheme of the complement color
             fetch(`https://www.thecolorapi.com/scheme?rgb=${complement_color.r},${complement_color.g},${complement_color.b}&mode=${color_scheme_names[0]}&count=3`)
             .then(response => response.json())
@@ -334,6 +380,8 @@ function getColorScheme(index) {
                 let cc=2;
                 for (let comp_color of complement_data.colors) {
                     color_blocks[cc].style.backgroundColor = comp_color.rgb.value;
+                    hex_codes[cc] = comp_color.hex.value;
+                    hex_blocks[cc].innerText = hex_codes[cc];
                     cc++;
                 }
             });
@@ -344,16 +392,24 @@ function getColorScheme(index) {
             let triad2_color = data.colors[1].rgb;
             color_blocks[1].style.backgroundColor = triad1_color.value;
             color_blocks[2].style.backgroundColor = triad2_color.value;
+            hex_codes[1] = data.colors[0].hex.value;
+            hex_codes[2] = data.colors[1].hex.value;
+            hex_blocks[1].innerText = hex_codes[1];
+            hex_blocks[2].innerText = hex_codes[2];
             fetch(`https://www.thecolorapi.com/scheme?rgb=${triad1_color.r},${triad1_color.g},${triad1_color.b}&mode=${color_scheme_names[0]}&count=1`)
             .then(response => response.json())
             .then(triad3_data => {
                 // console.log(triad3_data);
                 color_blocks[3].style.backgroundColor = triad3_data.colors[0].rgb.value;
+                hex_codes[3] = triad3_data.colors[0].hex.value;
+                hex_blocks[3].innerText = hex_codes[3];
             });
             fetch(`https://www.thecolorapi.com/scheme?rgb=${triad2_color.r},${triad2_color.g},${triad2_color.b}&mode=${color_scheme_names[0]}&count=1`)
             .then(response => response.json())
             .then(triad4_data => {
                 color_blocks[4].style.backgroundColor = triad4_data.colors[0].rgb.value;
+                hex_codes[4] = triad4_data.colors[0].hex.value;
+                hex_blocks[4].innerText = hex_codes[4];
             });
         }
         else {
@@ -363,23 +419,28 @@ function getColorScheme(index) {
             for (let color of data.colors) {
                 // console.log(color.rgb.value);
                 color_blocks[c].style.backgroundColor = color.rgb.value;
+                hex_codes[c] = color.hex.value;
+                hex_blocks[c].innerText = hex_codes[c];
                 c++;
+                
             }
+            
         }
+        
+        // console.log(hex_codes[0]);
     });
 }
 
-function selectCategory(buttonname) {
-    console.log(buttonname);
-    // for (let category_li of list_of_category_btns) {
-    //     if (category_li.getAttribute('id') === buttonname) {
-    //         category_li.innerHTML = `
-    //                         <button class="btn category-btn active-btn" data-buttonname="${buttonname}">
-    //                             <p>${buttonname}</p>
-    //                             <img src="icons/check.svg" class='btn-icon' alt="selected">
-    //                         </button>
-    //                         `;
-    //         break;
-    //     }
-    // }
+/* Attach a click eventListener to each color block, when clicked, get and copy the hex_value */
+let hex_containers = document.querySelectorAll('.hex-wrapper');
+for (let h=0; h< hex_containers.length; h++) {
+    hex_containers[h].addEventListener('click', function() {
+        copyHexValue(h);
+    });
+
+}
+/* Copy clicked hex value to user's clipboard */
+function copyHexValue(hex_index) {
+    // console.log('clicked to copy', hex_codes[hex_index]);
+    navigator.clipboard.writeText(hex_codes[hex_index]);
 }
