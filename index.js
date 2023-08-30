@@ -1,3 +1,5 @@
+import { TOKEN } from '/config.js';
+
 /* Default list of categories. More can be added by user input. Selected categories will be fed into chatgpt to generate art prompts */
 const list_of_categories = ['Nature', 'Buildings', 'People', 'Animals', 'Food & Drink', 'Small Objects', 'Geometry', 'Fantasy', 'Science'];
 /* Categories that the user selected from the list of category buttons. automatically includes user-inputted categories */
@@ -177,7 +179,7 @@ function updateProgressBar() {
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = ""; // to be set somehow in environmental variables, possibly in netlify
+const API_KEY = "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"; // to be set somehow in environmental variables, possibly in netlify
 
 const prompt_output = document.getElementById('prompt-output');
 
