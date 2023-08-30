@@ -179,7 +179,7 @@ function updateProgressBar() {
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = "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"; // to be set somehow in environmental variables, possibly in netlify
+const API_KEY = TOKEN; // to be set somehow in environmental variables, possibly in netlify
 
 const prompt_output = document.getElementById('prompt-output');
 
