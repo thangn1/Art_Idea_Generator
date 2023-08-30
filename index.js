@@ -177,7 +177,7 @@ function updateProgressBar() {
     }
 }
 
-import { TOKEN } from '/config.js';
+import TOKEN from '/apikey.js';
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
