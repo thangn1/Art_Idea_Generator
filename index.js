@@ -132,20 +132,21 @@ function removeElement(array, item) {
     }
 }
 
-let query_string = '';
+
 
 /* Open AI ChatGPT setup */
+// did not work because node.js is extremely confusing and convoluted.
 // Taken from https://runjs.app/blog/chatgpt-javascript-api
 // initial load of openai npm package // downloaded by typing 'npm i openai' into the terminal
 // const { Configuration, OpenAIApi } = require("openai");
-import { Configuration, OpenAIApi } from "/openai";
+// import { Configuration, OpenAIApi } from "openai";
 // setup openai api key
 /* OpenAI API key: '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' */
-const configuration = new Configuration({
-    apiKey: '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'
-});
+// const configuration = new Configuration({
+//     apiKey: ''
+// });
 // Configure openai api access
-const openai = new OpenAIApi(configuration);
+// const openai = new OpenAIApi(configuration);
 
 // Next, take the user input and write the main function to get a response.
 /*
@@ -155,26 +156,30 @@ max_tokens is the number of tokens able to be received back. 1 english word = 1.
 Temperature is a hyperparameter used in some natural language processing models, including ChatGPT, to control the level of randomness or "creativity" in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. 
 top_p can also be used to control randomness, but documentation recommended either changing temperature or top_p, not both.
 */
-const getResponse = async () => {
-    const response = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: [
-            {
-                role: 'user',
-                content: query_string
-            },
-        ],
-        temperature: 0,
-        max_tokens: 2048,
-        temperature: 1.5, 
-        top_p: 1.0,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0
-    });
+// const getResponse = async () => {
+//     const response = await openai.createChatCompletion({
+//         model: 'gpt-3.5-turbo',
+//         messages: [
+//             {
+//                 role: 'user',
+//                 content: query_string
+//             },
+//         ],
+//         temperature: 0,
+//         max_tokens: 2048,
+//         temperature: 1.5, 
+//         top_p: 1.0,
+//         frequency_penalty: 0.0,
+//         presence_penalty: 0.0
+//     });
     
-    console.log(response.data.choices[0].message);
-}
+//     console.log(response.data.choices[0].message);
+// }
 
+
+// https://www.builder.io/blog/stream-ai-javascript
+
+let query_string = '';
 /* Using the selected_categories array, which contain all the categories that the user has selected (either entered through input or clicked on button), query chatgpt for responses on 'ideas for what to draw about ...' or just 'ideas about ...'*/
 const generate_prompt_btn = document.getElementById('random-prompt-btn');
 
@@ -186,10 +191,14 @@ generate_prompt_btn.addEventListener('click', function() {
     for (let category of selected_categories) {
         query_string += `${category}, `;
     }
-    console.log(query_string);
+    // console.log(query_string);
     // call the chaptgpt api to generate a text response from ai about the query string.
     // getResponse();
 });
+
+const API_URL = "<https://api.openai.com/v1/chat/completions>";
+const API_KEY = "YOUR_API_KEY";
+
 
 
 
