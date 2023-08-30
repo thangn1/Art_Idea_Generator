@@ -168,26 +168,28 @@ function updateProgressBar() {
     let width = 1;
     let identity = setInterval(scene, 10);
     function scene() {
-      if (width >= 100) {
-        clearInterval(identity);
-      } else {
-        width+=0.18; 
-        loading_bar.style.width = width + '%'; 
-      }
+        if (width >= 100) {
+            clearInterval(identity);
+        } else {
+            width+=0.18; 
+            loading_bar.style.width = width + '%'; 
+        }
     }
-  }
+}
+
+import { TOKEN } from '/config.js';
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
 // console.log(process.env.URL);
 // let API_KEY = process.env.OPENAI_API_KEY;
-let API_KEY = '';
-fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/URL')
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-    // API_KEY = data;
-});
+let API_KEY = TOKEN;
+// fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/URL')
+// .then(response => response.json())
+// .then(data => {
+//     console.log(data);
+//     // API_KEY = data;
+// });
 
  // to be set somehow in environmental variables, possibly in netlify
 
