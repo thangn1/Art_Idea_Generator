@@ -179,13 +179,14 @@ function updateProgressBar() {
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
-let API_KEY = '';
-fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/OPENAI_API_KEY')
-.then(response => response.json())
-.then(data => {
-    console.log(data)
-    API_KEY = data;
-});
+let API_KEY = process.env.OPENAI_API_KEY;
+// fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/OPENAI_API_KEY')
+// .then(response => response.json())
+// .then(data => {
+//     console.log(data);
+//     API_KEY = data;
+// });
+
  // to be set somehow in environmental variables, possibly in netlify
 
 const prompt_output = document.getElementById('prompt-output');
