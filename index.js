@@ -179,6 +179,7 @@ function updateProgressBar() {
 
 // https://www.builder.io/blog/stream-ai-javascript
 const API_URL = "https://api.openai.com/v1/chat/completions";
+console.log(process.env.URL);
 let API_KEY = process.env.OPENAI_API_KEY;
 // fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/OPENAI_API_KEY')
 // .then(response => response.json())
