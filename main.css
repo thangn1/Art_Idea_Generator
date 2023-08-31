@@ -279,13 +279,15 @@ footer p {
 
 @media (max-width: 650px) {
     header {
-        padding: 25px;
+        padding: 20px;
     }
     header h1 {
         font-size: 24px;
+        margin-left: 10px;
     }
     header h2 {
-        font-size: 18px;
+        font-size: 16px;
+        margin-left: 25px;
     }
     main {
         margin: 36px auto;
@@ -309,5 +311,8 @@ footer p {
         font-size: 16px;
         padding-left: 16px;
         padding-right: 16px;
+    }
+    footer {
+        padding: 33px;
     }
 }
