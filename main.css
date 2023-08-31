@@ -289,13 +289,20 @@ footer p {
     }
     main {
         margin: 36px auto;
-        padding: 0 20px;
+        padding: 0 10px;
     }
     .big-btn {
         font-size: 18px;
     }
     .btn {
-        width: 175px;
+        width: 145px;
+    }
+    .category-btn .btn-icon {
+        width: 10px;
+        /* padding-right: 5px; */
+    }
+    .category-btn-txt {
+        padding-left: 10px;
     }
     #input-category, 
     #prompt-output {
