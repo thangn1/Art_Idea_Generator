@@ -52,8 +52,6 @@ function generateCategoryBtn(category, is_category_selected) {
         category_btn.classList.toggle('active-btn');
         is_category_selected = !is_category_selected;
 
-        // console.log('click', category, is_category_selected);
-
         /* if it is selected, change icon to ✓ */
         if(is_category_selected) {
             category_btn.innerHTML = `
@@ -145,7 +143,6 @@ const loading_progress = document.getElementById('loading-progress');
 const loading_bar = document.getElementById("loading-bar");  
 
 generate_prompt_btn.addEventListener('click', function() {
-    // console.log(selected_categories);
 
     // create a query string to enter into chaptgpt
     query_string = `Suggest a idea for artwork about `;
@@ -153,7 +150,6 @@ generate_prompt_btn.addEventListener('click', function() {
         query_string += `${category}, `;
     }
     query_string += '. You must not give a response longer than 200 words.';
-    // console.log(query_string);
     
     loading_progress.classList.remove('hidden'); // add hidden class back in generatePrompt() once prompt has generated
     // update progress bar from 1% to 100% to give a sense that the program is taking time to load
@@ -179,19 +175,9 @@ function updateProgressBar() {
 
 import TOKEN from '/apikey.js';
 
-// https://www.builder.io/blog/stream-ai-javascript
+// https://www.youtube.com/watch?v=2J3xbMkH2K4 for how to hide api_key with netlify
 const API_URL = "https://api.openai.com/v1/chat/completions";
-// console.log(process.env.URL);
-// let API_KEY = process.env.OPENAI_API_KEY;
 let API_KEY = TOKEN;
-// fetch('https://api.netlify.com/api/v1/accounts/thangn1/env/URL')
-// .then(response => response.json())
-// .then(data => {
-//     console.log(data);
-//     // API_KEY = data;
-// });
-
- // to be set somehow in environmental variables, possibly in netlify
 
 const prompt_output = document.getElementById('prompt-output');
 
@@ -229,7 +215,6 @@ const generatePrompt = async () => {
         })
         .then(response => response.json())
         .then(data => {
-            // console.log(data);
             prompt_output.innerText = data.choices[0].message.content;
             loading_progress.classList.add('hidden');
         })
@@ -304,7 +289,6 @@ function getSetDarkMainColor(main_color) {
     fetch(`https://www.thecolorapi.com/scheme?rgb=${main_color.r},${main_color.g},${main_color.b}&mode=${'monochrome-dark'}&count=1`)
             .then(response => response.json())
             .then(dark_color => {
-                // console.log(dark_color);
                 root_DOM.style.setProperty('--dark-main-color', `${dark_color.colors[0].rgb.value}` );
             });
 }
@@ -322,11 +306,9 @@ function generateRandomColor() {
     fetch(`https://www.thecolorapi.com/id?rgb=(${r_val},${g_val},${b_val})`)
     .then(response => response.json())
     .then(color_data => {
-        // console.log('fetch main color',color_data);
         main_color_data = color_data;
         
         hex_codes[0] = color_data.hex.value;
-        // console.log('src', hex_codes[0]);
         // set the hex_code displayed overtop the main color to be the hex_value from GET id?color
         hex_blocks[0].innerText = hex_codes[0];
         
@@ -341,7 +323,6 @@ let color_scheme_index = 0; // used to index color_scheme_names and color_scheme
 getColorScheme(color_scheme_index);
 
 document.addEventListener('click', function(e) {
-    // console.log(e.target.id);
 
     /* Handle click on color scheme buttons */
     /* Whenever 'Pick New Random Color button is clicked, generate and set a new random color */
@@ -379,7 +360,6 @@ function getColorScheme(index) {
     fetch(`https://www.thecolorapi.com/scheme?rgb=${main_color.r},${main_color.g},${main_color.b}&mode=${color_scheme_names[index]}&count=4`)
     .then(response => response.json())
     .then(data => {
-        // console.log(data);
 
         if (color_scheme_names[index] === 'complement') {
             let complement_color = data.colors[0].rgb;
@@ -401,7 +381,7 @@ function getColorScheme(index) {
             });
         }
         else if (color_scheme_names[index] === 'triad') {
-            // change colorblocks 3,4. colorblock 3 is to be a monochrome of colorblock 1. colorblock 4 is to be a monochrome of colorblock 2.
+            // change colorblocks 3,4. colorblock 3 is to be a monochrome of colorblock 1 (triad1). colorblock 4 is to be a monochrome of colorblock 2 (triad2).
             let triad1_color = data.colors[0].rgb;
             let triad2_color = data.colors[1].rgb;
             color_blocks[1].style.backgroundColor = triad1_color.value;
@@ -413,7 +393,7 @@ function getColorScheme(index) {
             fetch(`https://www.thecolorapi.com/scheme?rgb=${triad1_color.r},${triad1_color.g},${triad1_color.b}&mode=${color_scheme_names[0]}&count=1`)
             .then(response => response.json())
             .then(triad3_data => {
-                // console.log(triad3_data);
+                /* get monochrome variant color of triad1 */
                 color_blocks[3].style.backgroundColor = triad3_data.colors[0].rgb.value;
                 hex_codes[3] = triad3_data.colors[0].hex.value;
                 hex_blocks[3].innerText = hex_codes[3];
@@ -421,6 +401,7 @@ function getColorScheme(index) {
             fetch(`https://www.thecolorapi.com/scheme?rgb=${triad2_color.r},${triad2_color.g},${triad2_color.b}&mode=${color_scheme_names[0]}&count=1`)
             .then(response => response.json())
             .then(triad4_data => {
+                /* get monochrome variant color of triad2 */
                 color_blocks[4].style.backgroundColor = triad4_data.colors[0].rgb.value;
                 hex_codes[4] = triad4_data.colors[0].hex.value;
                 hex_blocks[4].innerText = hex_codes[4];
@@ -429,19 +410,17 @@ function getColorScheme(index) {
         else {
             /* change color of colorblocks 1,2,3,4. colorblock 0 is the main color generated at the beginning */
             let c=1;
-            // console.log(main_color_data.rgb.value); 
             for (let color of data.colors) {
-                // console.log(color.rgb.value);
+                /* Set div's color */
                 color_blocks[c].style.backgroundColor = color.rgb.value;
+                /* Store the hex value of each color */
                 hex_codes[c] = color.hex.value;
+                /* Display this hex value when div is hovered over */
                 hex_blocks[c].innerText = hex_codes[c];
                 c++;
                 
             }
-            
         }
-        
-        // console.log(hex_codes[0]);
     });
 }
 
@@ -455,6 +434,5 @@ for (let h=0; h< hex_containers.length; h++) {
 }
 /* Copy clicked hex value to user's clipboard */
 function copyHexValue(hex_index) {
-    // console.log('clicked to copy', hex_codes[hex_index]);
     navigator.clipboard.writeText(hex_codes[hex_index]);
 }

@@ -138,7 +138,6 @@ header h2 {
     -ms-transition: box-shadow 0.2s ease-in-out;
     -o-transition: box-shadow 0.2s ease-in-out;
     transition: box-shadow 0.2s ease-in-out;
-    /* opacity: 1; */
 }
 .primary-btn {
     background-color: var(--dark-main-color);
@@ -153,9 +152,7 @@ header h2 {
 }
 .big-btn:hover,
 .big-btn:focus {
-    /* opacity: 0.8; */
     box-shadow: 0 0 10px var(--main-color);
-    /* text-decoration: underline; */
 }
 .big-btn:active {
     box-shadow: none;
@@ -226,7 +223,6 @@ header h2 {
 
 .hex-wrapper {
     display: flex;
-    /* border: 3px dashed aqua; */
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -239,26 +235,12 @@ header h2 {
 .hex-wrapper:focus,
 .hex-wrapper:active {
     opacity: 1;
-    /* border: 3px solid aqua; */
 
 }
 .hex-code {
     color: #fff;
     font-weight: 600;
 }
-
-/* #color6 {
-    grid-column: 1 / 2;
-    grid-row: 4;
-    background-color:#aaa;
-    border-bottom-left-radius: 20px;
-}
-#color7 {
-    grid-column: 2 / 3;
-    grid-row: 4;
-    background-color:#ccc;
-    border-bottom-right-radius: 20px;
-} */
 
 
 footer {
@@ -301,7 +283,6 @@ footer p {
     }
     .category-btn .btn-icon {
         width: 10px;
-        /* padding-right: 5px; */
     }
     .category-btn-txt {
         padding-left: 10px;
