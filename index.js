@@ -167,7 +167,7 @@ function updateProgressBar() {
         if (width >= 100) {
             clearInterval(identity);
         } else {
-            width+=0.18; 
+            width+=0.175; 
             loading_bar.style.width = width + '%'; 
         }
     }
