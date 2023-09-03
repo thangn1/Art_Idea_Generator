@@ -15,7 +15,7 @@ html, body, h1, h2, p, ul, input, .btn, .big-btn, span{
     text-align: center;
 }
 .small-txt {
-    font-size: 14px;
+    font-size: 0.875rem;
     margin-top: 20px;
 }
 .hidden {
@@ -50,12 +50,13 @@ header svg path {
 header h1 {
     margin: 0 auto 0 17px;
     font-family: 'Jacques Francois', serif;
-    font-size: 36px;
+    font-size: 2.25rem;
     font-weight: 400;
 }
 header h2 {
     font-weight: 300;
     margin-left: 15px;
+    font-size: 1.375rem;
 }
 
 /* Buttons */
@@ -75,7 +76,7 @@ header h2 {
     border: 3px solid #c0c0c0;
     background-color: #c0c0c020;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
 }
 .active-btn {
     border: 3px solid var(--main-color);
@@ -112,7 +113,7 @@ header h2 {
     border-radius: 60px;
     border: 3px solid #c0c0c0;
     background-color: #c0c0c020;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 #input-category:focus,
 #input-category:active {
@@ -125,10 +126,11 @@ header h2 {
     right: 20px;
     pointer-events: auto;
     cursor: pointer;
+    padding-right: 3px;
 }
 
 .big-btn {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 600;
     padding: 27px;
     max-width: 650px;
@@ -166,7 +168,7 @@ header h2 {
     border: 3px solid #d9d9d9;
     background-color: #d9d9d950;
     padding: 24px 32px;
-    font-size: 18px;
+    font-size: 1.125rem;
     width: 100%;
 }
 
@@ -253,7 +255,7 @@ footer {
 }
 .big-txt {
     font-family: 'Jacques Francois', serif;
-    font-size: 24px;
+    font-size: 1.5rem;
     margin-bottom: 24px;
 }
 footer p {
@@ -268,11 +270,11 @@ footer p {
         padding: 20px;
     }
     header h1 {
-        font-size: 24px;
+        font-size: 1.5rem;
         margin-left: 10px;
     }
     header h2 {
-        font-size: 16px;
+        font-size: 1rem;
         margin-left: 25px;
     }
     main {
@@ -280,13 +282,10 @@ footer p {
         padding: 0 10px;
     }
     .big-btn {
-        font-size: 18px;
+        font-size: 1.125rem;
     }
     .btn {
         min-width: 145px;
-    }
-    .category-btn .btn-icon {
-        /* width: 10px; */
     }
     .category-btn-txt {
         padding-left: 10px;
@@ -296,7 +295,7 @@ footer p {
     }
     #input-category, 
     #prompt-output {
-        font-size: 16px;
+        font-size: 1rem;
         padding-left: 16px;
         padding-right: 16px;
     }
