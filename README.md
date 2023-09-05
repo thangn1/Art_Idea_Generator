@@ -1,7 +1,7 @@
 # <a href='artideagenerator.netlify.app'>Art Idea Generator<a>
 
-### The purpose of this app was to help inspire creative thinking to help humans make unique artwork.
-It works by generating an art prompt (or rather an idea for an artwork) based on selected categories, either from a default list of choices or the user's own interest. It then uses ChatGPT to generate an idea of what to draw/paint/create art about.<br>
+### The purpose of this app was to help inspire creative thinking for human-made art using random color generation and AI prompt generation.
+It works by generating an idea for an artwork based on selected categories, either from a default list of choices or the user's inputted interest. It then uses ChatGPT to generate an idea of what to draw/paint/create art about.<br>
 It also generates a random color (by choosing 3 random values [0,255] for (red, green, blue)), as well as corresponding colors based on color theory. <br><br>
 Given a random (tailored to your interests) art prompt and random (but matching) colors, you can come up with plenty of ideas for your next masterful art piece.
 These are meant to stimulate your creative brain to create something beautiful and truly unique from randomness.<br><br>
