@@ -132,9 +132,8 @@ function removeElement(array, item) {
     }
 }
 
-
+let response_given = false;
 /* Generate Prompt and OpenAI code */
-
 let query_string = '';
 /* Using the selected_categories array, which contain all the categories that the user has selected (either entered through input or clicked on button), query chatgpt for responses on 'ideas for what to draw about ...' or just 'ideas about ...'*/
 const generate_prompt_btn = document.getElementById('random-prompt-btn');
@@ -158,8 +157,10 @@ generate_prompt_btn.addEventListener('click', function() {
     generatePrompt();
 });
 
+/* show progress on loading bar based on a timer. */
 function updateProgressBar() {
-     
+    response_given = false;
+
     loading_bar.style.width = '1%';
     let width = 1;
     let identity = setInterval(scene, 10);
@@ -167,8 +168,14 @@ function updateProgressBar() {
         if (width >= 100) {
             clearInterval(identity);
         } else {
-            width+=0.175; 
+            width+=0.065; 
             loading_bar.style.width = width + '%'; 
+        }
+        // once response from chatgpt api is received, set progress 100% before hiding it.
+        // better for loading progress to be slower and then when job is finished, skip to 100%, rather than reach 100% earlier when response is empty and have user wait for response.
+        if (response_given) {
+            width = 100;
+            loading_bar.style.width = '100%';
         }
     }
 }
@@ -216,7 +223,12 @@ const generatePrompt = async () => {
         .then(response => response.json())
         .then(data => {
             prompt_output.innerText = data.choices[0].message.content;
-            loading_progress.classList.add('hidden');
+            // show loading bar progress until a response from openai api was received, then set progress to 100% and hide the progress bar
+            response_given = true;
+            setTimeout(function() {
+                loading_progress.classList.add('hidden');
+            }, 200);
+            
         })
     
     } catch (error) {
