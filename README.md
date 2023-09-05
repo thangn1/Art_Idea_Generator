@@ -1,5 +1,5 @@
 # <a href='artideagenerator.netlify.app'>Art Idea Generator<a>
-
+Link to webpage: <a href='artideagenerator.netlify.app'>artideagenerator.netlify.app<a>
 ### The purpose of this app was to help inspire creative thinking for human-made art using random color generation and AI prompts.
 It uses ChatGPT to generate an idea for an artwork based on selected categories/interests, from a default list of choices and/or the user's input.
 It also generates a random color (by choosing 3 random values [0,255] for (red, green, blue)), as well as corresponding colors based on color theory. <br><br>
