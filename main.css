@@ -60,6 +60,9 @@ header h2 {
     margin-left: 25px;
     font-size: 1.375rem;
 }
+.random-prompt-generation p:first-child {
+    padding: 0 15px;
+}
 
 /* Buttons */
 .btn-row {
